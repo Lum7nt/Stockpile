@@ -1,0 +1,6 @@
+.venv/
+app/.venv/
+__pycache__/
+*.pyc
+.playwright-mcp/
+data/
