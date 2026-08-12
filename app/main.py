@@ -87,7 +87,7 @@ async def get_settings(db: Session = Depends(get_db)):
     record = ensure_app_settings(db)
     characters = list(db.execute(select(CharacterToken).order_by(CharacterToken.character_name)).scalars())
     return {
-        "client_id": record.client_id,
+        "client_id": settings.eve_client_id,
         "client_secret_configured": bool(record.client_secret),
         "callback_url": record.callback_url,
         "default_low_stock_percent": record.default_low_stock_percent,
@@ -111,7 +111,7 @@ async def get_settings(db: Session = Depends(get_db)):
 @app.post("/api/settings")
 async def save_settings(payload: SettingsUpdate, db: Session = Depends(get_db)):
     record = ensure_app_settings(db)
-    record.client_id = payload.client_id
+    record.client_id = settings.eve_client_id
     record.client_secret = payload.client_secret
     record.callback_url = payload.callback_url
     record.default_low_stock_percent = payload.default_low_stock_percent

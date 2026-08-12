@@ -103,6 +103,8 @@ window.ledgerApp = function ledgerApp() {
           this.thresholds = thresholdsResult.value.items || [];
         }
 
+        this.hydrateData();
+
         const failed = [settingsResult, dashboardResult, ordersResult, restockResult, thresholdsResult].filter(
           (result) => result.status === "rejected",
         );
@@ -123,7 +125,7 @@ window.ledgerApp = function ledgerApp() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            client_id: this.settings.client_id,
+            client_id: null,
             client_secret: null,
             callback_url: this.settings.callback_url,
             default_low_stock_percent: Number(this.settings.default_low_stock_percent),
@@ -185,6 +187,112 @@ window.ledgerApp = function ledgerApp() {
       this.accountMenuOpen = false;
     },
 
+    hydrateData() {
+      const characterMap = this.characterDirectory();
+      const orderTotals = new Map();
+
+      this.orders = this.orders.map((item) => {
+        const character = characterMap.get(String(item.character_id)) || {};
+        const remainingPercent =
+          item.remaining_percent ??
+          (Number(item.volume_total) ? (Number(item.volume_remain) / Number(item.volume_total)) * 100 : 0);
+        const expiresAt = item.expires_at || this.issuedPlusDuration(item.issued, item.duration);
+        const enriched = {
+          ...item,
+          item_name: item.item_name || item.type_name || `Type ${item.type_id}`,
+          location_name: item.location_name || `Location #${item.location_id}`,
+          character_name: item.character_name || character.character_name || `Pilot ${item.character_id}`,
+          remaining_percent: Number(remainingPercent.toFixed(1)),
+          total_value: Number(item.total_value || 0) || Number(item.volume_remain || 0) * Number(item.price || 0),
+          expires_at: expiresAt,
+        };
+
+        const bucket = orderTotals.get(String(enriched.character_id)) || { count: 0, value: 0 };
+        bucket.count += 1;
+        bucket.value += Number(enriched.total_value || 0);
+        orderTotals.set(String(enriched.character_id), bucket);
+        return enriched;
+      });
+
+      const orderMap = new Map(this.orders.map((item) => [`${item.character_id}:${item.type_id}`, item]));
+      this.restock = this.restock.map((item) => {
+        const linkedOrder = orderMap.get(`${item.character_id}:${item.type_id}`) || {};
+        const character = characterMap.get(String(item.character_id)) || {};
+        return {
+          ...item,
+          character_name: item.character_name || character.character_name || `Pilot ${item.character_id}`,
+          item_name: item.item_name || linkedOrder.item_name || `Type ${item.type_id}`,
+          location_name: item.location_name || linkedOrder.location_name || `Location #${linkedOrder.location_id || 0}`,
+        };
+      });
+
+      this.dashboard.characters = this.characterSummaries(orderTotals, characterMap);
+    },
+
+    characterDirectory() {
+      const directory = new Map();
+      [...(this.settings.characters || []), ...(this.dashboard.characters || [])].forEach((character) => {
+        if (!character || character.character_id == null) return;
+        const key = String(character.character_id);
+        const existing = directory.get(key) || {};
+        directory.set(key, {
+          ...existing,
+          ...character,
+          character_id: character.character_id,
+          character_name: character.character_name || existing.character_name || `Pilot ${character.character_id}`,
+          avatar_url: character.avatar_url || existing.avatar_url || "",
+          wallet_balance: Number(character.wallet_balance || existing.wallet_balance || 0),
+          active_sell_orders: Number(character.active_sell_orders || existing.active_sell_orders || 0),
+          active_order_value: Number(character.active_order_value || existing.active_order_value || 0),
+          low_stock_count: Number(character.low_stock_count || existing.low_stock_count || 0),
+          asset_estimate: Number(character.asset_estimate || existing.asset_estimate || 0),
+        });
+      });
+      return directory;
+    },
+
+    characterSummaries(orderTotals = null, existingDirectory = null) {
+      const directory = existingDirectory || this.characterDirectory();
+      const orderSummary = orderTotals || this.orders.reduce((map, item) => {
+        const key = String(item.character_id);
+        const bucket = map.get(key) || { count: 0, value: 0 };
+        bucket.count += 1;
+        bucket.value += Number(item.total_value || 0);
+        map.set(key, bucket);
+        return map;
+      }, new Map());
+
+      const restockSummary = this.restock.reduce((map, item) => {
+        const key = String(item.character_id);
+        const count = map.get(key) || 0;
+        map.set(key, count + 1);
+        return map;
+      }, new Map());
+
+      const ids = new Set([
+        ...directory.keys(),
+        ...Array.from(orderSummary.keys()),
+        ...Array.from(restockSummary.keys()),
+      ]);
+
+      return Array.from(ids)
+        .map((id) => {
+          const existing = directory.get(String(id)) || {};
+          const orderInfo = orderSummary.get(String(id)) || { count: 0, value: 0 };
+          return {
+            character_id: existing.character_id ?? Number(id),
+            character_name: existing.character_name || `Pilot ${id}`,
+            avatar_url: existing.avatar_url || "",
+            wallet_balance: Number(existing.wallet_balance || 0),
+            active_sell_orders: Number(existing.active_sell_orders || orderInfo.count || 0),
+            active_order_value: Number(existing.active_order_value || orderInfo.value || 0),
+            low_stock_count: Number(existing.low_stock_count || restockSummary.get(String(id)) || 0),
+            asset_estimate: Number(existing.asset_estimate || 0),
+          };
+        })
+        .sort((a, b) => String(a.character_name).localeCompare(String(b.character_name)));
+    },
+
     selectedCharacterMeta() {
       const linkedCount = this.linkedCharacterCount();
       if (this.selectedCharacterId === "all") {
@@ -215,39 +323,30 @@ window.ledgerApp = function ledgerApp() {
     },
 
     characterOptions() {
+      const summaries = this.characterSummaries();
       const allOption = {
         character_id: "all",
         character_name: "All Characters",
         avatar_url: "",
         total_isk: this.filteredStats().walletOnly + this.filteredStats().activeOrderValue,
       };
-      const dashboardById = new Map(
-        this.dashboard.characters.map((character) => [String(character.character_id), character]),
-      );
-      const baseCharacters =
-        this.settings.characters.length > 0
-          ? this.settings.characters
-          : this.dashboard.characters;
-      const chars = baseCharacters.map((character) => {
-        const enriched = dashboardById.get(String(character.character_id)) || {};
-        return {
-          ...character,
-          ...enriched,
-          total_isk: Number(enriched.wallet_balance || 0) + Number(enriched.active_order_value || 0),
-        };
-      });
+      const chars = summaries.map((character) => ({
+        ...character,
+        total_isk: Number(character.wallet_balance || 0) + Number(character.active_order_value || 0),
+      }));
       return [allOption, ...chars];
     },
 
     linkedCharacterCount() {
-      return this.settings.characters.length || this.dashboard.characters.length || 0;
+      return this.characterSummaries().length;
     },
 
     filteredCharacters() {
+      const characters = this.characterSummaries();
       if (this.selectedCharacterId === "all") {
-        return this.dashboard.characters;
+        return characters;
       }
-      return this.dashboard.characters.filter(
+      return characters.filter(
         (character) => String(character.character_id) === String(this.selectedCharacterId),
       );
     },
@@ -303,10 +402,7 @@ window.ledgerApp = function ledgerApp() {
     filteredStats() {
       const characters = this.filteredCharacters();
       const walletOnly = characters.reduce((sum, character) => sum + Number(character.wallet_balance || 0), 0);
-      const activeOrderValue = characters.reduce(
-        (sum, character) => sum + Number(character.active_order_value || 0),
-        0,
-      );
+      const activeOrderValue = characters.reduce((sum, character) => sum + Number(character.active_order_value || 0), 0);
       const activeOrderCount = this.filteredOrders().length;
       const lowStockWarnings = this.restockRows().filter((row) => row.status !== "healthy").length;
       return {
@@ -463,6 +559,14 @@ window.ledgerApp = function ledgerApp() {
       if (abs < 3600) return rtf.format(Math.round(diffSeconds / 60), "minute");
       if (abs < 86400) return rtf.format(Math.round(diffSeconds / 3600), "hour");
       return rtf.format(Math.round(diffSeconds / 86400), "day");
+    },
+
+    issuedPlusDuration(issued, durationDays) {
+      if (!issued || !durationDays) return "";
+      const issuedAt = new Date(issued);
+      if (Number.isNaN(issuedAt.getTime())) return "";
+      issuedAt.setUTCDate(issuedAt.getUTCDate() + Number(durationDays));
+      return issuedAt.toISOString();
     },
 
     fmtISK,

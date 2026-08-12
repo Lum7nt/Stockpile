@@ -9,24 +9,11 @@
     window.tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            panel: "#111827",
-            panelSoft: "#0f172a",
-            glow: "#22d3ee",
-            ember: "#f59e0b",
-          },
           boxShadow: {
-            glass: "0 22px 60px rgba(2, 6, 23, 0.55)",
+            glass: "0 24px 64px rgba(12, 10, 9, 0.42)",
           },
           animation: {
-            "spin-soft": "spin 1.2s linear infinite",
-            floaty: "floaty 8s ease-in-out infinite",
-          },
-          keyframes: {
-            floaty: {
-              "0%, 100%": { transform: "translateY(0px)" },
-              "50%": { transform: "translateY(-8px)" },
-            },
+            "spin-soft": "spin 1s linear infinite",
           },
         },
       },
@@ -38,96 +25,108 @@
   <style>
     [x-cloak] { display: none !important; }
     ::-webkit-scrollbar { width: 10px; height: 10px; }
-    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
-    ::-webkit-scrollbar-thumb { background: rgba(71, 85, 105, 0.85); border-radius: 999px; }
-    ::selection { background: rgba(34, 211, 238, 0.25); }
+    ::-webkit-scrollbar-track { background: rgba(41, 37, 36, 0.7); }
+    ::-webkit-scrollbar-thumb { background: rgba(120, 113, 108, 0.9); border-radius: 999px; }
+    ::selection { background: rgba(245, 158, 11, 0.2); }
   </style>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100">
+<body class="min-h-screen bg-stone-950 text-stone-100">
   <div class="pointer-events-none fixed inset-0 overflow-hidden">
-    <div class="absolute -left-24 top-0 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl"></div>
-    <div class="absolute right-0 top-24 h-80 w-80 rounded-full bg-amber-400/10 blur-3xl"></div>
-    <div class="absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-sky-500/10 blur-3xl"></div>
-    <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.02),transparent_22%),radial-gradient(circle_at_top,rgba(34,211,238,0.08),transparent_30%)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.08),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(251,191,36,0.05),transparent_24%)]"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.02),transparent_22%)]"></div>
   </div>
 
   <div x-data="ledgerApp()" x-init="init()" x-cloak class="relative flex min-h-screen">
-    <aside class="fixed inset-y-0 left-0 z-30 hidden w-72 border-r border-slate-800/80 bg-slate-950/85 backdrop-blur-md lg:flex lg:flex-col">
-      <div class="border-b border-slate-800/80 px-6 py-6">
-        <div class="flex items-center gap-3">
-          <div class="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 shadow-[0_0_30px_rgba(34,211,238,0.18)]">
-            <svg viewBox="0 0 24 24" class="h-6 w-6 text-cyan-300" fill="none" stroke="currentColor" stroke-width="1.8">
+    <aside class="fixed inset-y-0 left-0 z-30 hidden w-72 border-r border-stone-800 bg-stone-950/95 backdrop-blur-md lg:flex lg:flex-col">
+      <div class="border-b border-stone-800 px-6 py-6">
+        <div class="flex items-center gap-4">
+          <div class="flex h-12 w-12 items-center justify-center rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-300 shadow-[0_0_28px_rgba(245,158,11,0.16)]">
+            <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M12 2 4 7v10l8 5 8-5V7l-8-5Z"></path>
               <path d="m4 7 8 5 8-5"></path>
               <path d="M12 12v10"></path>
             </svg>
           </div>
           <div>
-            <p class="text-[11px] uppercase tracking-[0.35em] text-cyan-300/80">EVE Ledger</p>
-            <h1 class="mt-1 text-lg font-semibold text-white">Command Deck</h1>
+            <p class="text-[11px] uppercase tracking-[0.35em] text-amber-400/80">EVE Ledger</p>
+            <h1 class="mt-1 text-lg font-semibold text-stone-100">Stockpile</h1>
+            <p class="mt-1 text-sm text-stone-400">Local market and inventory watch</p>
           </div>
         </div>
-        
       </div>
 
       <nav class="flex-1 px-4 py-6">
         <div class="space-y-2">
-          <button @click="activeTab='dashboard'" :class="activeTab === 'dashboard' ? 'border-cyan-400/40 bg-cyan-400/10 text-white shadow-[0_0_25px_rgba(34,211,238,0.10)]' : 'border-transparent text-slate-400 hover:border-slate-700 hover:bg-slate-900/80 hover:text-slate-100'" class="flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-medium transition">
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+          <button @click="activeTab='dashboard'" :class="activeTab === 'dashboard' ? 'border-l-amber-400 bg-stone-900 text-stone-100' : 'border-l-transparent text-stone-400 hover:bg-stone-900/70 hover:text-stone-100'" class="flex w-full items-center gap-3 rounded-2xl border border-stone-800 px-4 py-3 text-left text-sm font-medium transition-colors duration-150">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M4 13h7V4H4zM13 20h7v-9h-7zM13 4h7v7h-7zM4 20h7v-5H4z"></path>
             </svg>
             <span>Dashboard</span>
           </button>
-          <button @click="activeTab='orders'" :class="activeTab === 'orders' ? 'border-cyan-400/40 bg-cyan-400/10 text-white shadow-[0_0_25px_rgba(34,211,238,0.10)]' : 'border-transparent text-slate-400 hover:border-slate-700 hover:bg-slate-900/80 hover:text-slate-100'" class="flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-medium transition">
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+          <button @click="activeTab='orders'" :class="activeTab === 'orders' ? 'border-l-amber-400 bg-stone-900 text-stone-100' : 'border-l-transparent text-stone-400 hover:bg-stone-900/70 hover:text-stone-100'" class="flex w-full items-center gap-3 rounded-2xl border border-stone-800 px-4 py-3 text-left text-sm font-medium transition-colors duration-150">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M4 7h16M4 12h16M4 17h10"></path>
               <path d="M18 15v6"></path>
               <path d="m15 18 3 3 3-3"></path>
             </svg>
             <span>Active Orders</span>
           </button>
-          <button @click="activeTab='restock'" :class="activeTab === 'restock' ? 'border-cyan-400/40 bg-cyan-400/10 text-white shadow-[0_0_25px_rgba(34,211,238,0.10)]' : 'border-transparent text-slate-400 hover:border-slate-700 hover:bg-slate-900/80 hover:text-slate-100'" class="flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-medium transition">
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+          <button @click="activeTab='restock'" :class="activeTab === 'restock' ? 'border-l-amber-400 bg-stone-900 text-stone-100' : 'border-l-transparent text-stone-400 hover:bg-stone-900/70 hover:text-stone-100'" class="flex w-full items-center gap-3 rounded-2xl border border-stone-800 px-4 py-3 text-left text-sm font-medium transition-colors duration-150">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M12 3 2.5 20.5h19L12 3Z"></path>
               <path d="M12 9v4"></path>
               <path d="M12 17h.01"></path>
             </svg>
             <span>Restock Alerts</span>
           </button>
-          <button @click="activeTab='settings'" :class="activeTab === 'settings' ? 'border-cyan-400/40 bg-cyan-400/10 text-white shadow-[0_0_25px_rgba(34,211,238,0.10)]' : 'border-transparent text-slate-400 hover:border-slate-700 hover:bg-slate-900/80 hover:text-slate-100'" class="flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-medium transition">
-            <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+          <button @click="activeTab='settings'" :class="activeTab === 'settings' ? 'border-l-amber-400 bg-stone-900 text-stone-100' : 'border-l-transparent text-stone-400 hover:bg-stone-900/70 hover:text-stone-100'" class="flex w-full items-center gap-3 rounded-2xl border border-stone-800 px-4 py-3 text-left text-sm font-medium transition-colors duration-150">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.8">
               <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7Z"></path>
               <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-.4-1.1 1.7 1.7 0 0 0-1-.6 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H2.8a2 2 0 1 1 0-4H2.9a1.7 1.7 0 0 0 1.1-.4 1.7 1.7 0 0 0 .6-1 1.7 1.7 0 0 0-.34-1.87L4.2 6.27a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6c.4 0 .78-.14 1.1-.4.29-.28.46-.67.4-1.1V3a2 2 0 1 1 4 0v.1c-.06.43.1.82.4 1.1.32.26.7.4 1.1.4.67 0 1.3-.24 1.81-.7l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06c-.46.51-.7 1.14-.7 1.81 0 .4.14.78.4 1.1.28.29.67.46 1.1.4H21a2 2 0 1 1 0 4h-.1c-.43-.06-.82.1-1.1.4a1.7 1.7 0 0 0-.4 1Z"></path>
             </svg>
-            <span>Setup & Accounts</span>
+            <span>Setup and Accounts</span>
           </button>
         </div>
       </nav>
 
-      <div class="border-t border-slate-800/80 px-6 py-5">
-        <div class="rounded-3xl border border-slate-800/80 bg-slate-900/70 p-4 shadow-glass">
-          
+      <div class="border-t border-stone-800 px-6 py-5">
+        <div class="rounded-3xl border border-stone-800 bg-stone-900/80 p-4 shadow-glass">
+          <p class="text-[11px] uppercase tracking-[0.3em] text-stone-500">Fleet Status</p>
+          <div class="mt-3 grid grid-cols-2 gap-3">
+            <div class="rounded-2xl border border-stone-800 bg-stone-950/60 p-3">
+              <p class="text-xs uppercase tracking-[0.25em] text-stone-500">Pilots</p>
+              <p class="mt-2 font-mono text-lg text-stone-100" x-text="linkedCharacterCount()"></p>
+            </div>
+            <div class="rounded-2xl border border-stone-800 bg-stone-950/60 p-3">
+              <p class="text-xs uppercase tracking-[0.25em] text-stone-500">Alerts</p>
+              <p class="mt-2 font-mono text-lg text-amber-300" x-text="filteredStats().lowStockWarnings"></p>
+            </div>
+          </div>
         </div>
       </div>
     </aside>
 
     <div class="flex min-h-screen flex-1 flex-col lg:pl-72">
-      <header class="sticky top-0 z-20 border-b border-slate-800/70 bg-slate-950/75 backdrop-blur-xl">
+      <header class="sticky top-0 z-20 border-b border-stone-800 bg-stone-950/85 backdrop-blur-xl">
         <div class="flex flex-col gap-4 px-4 py-4 sm:px-6 xl:flex-row xl:items-center xl:justify-between">
           <div>
-            <p class="text-[11px] uppercase tracking-[0.35em] text-cyan-300/80">Operations Console</p>
-            <h2 class="mt-1 text-2xl font-semibold text-white">Trade Intelligence Dashboard</h2>
-            
+            <p class="text-[11px] uppercase tracking-[0.35em] text-amber-400/80">Operations Console</p>
+            <h2 class="mt-1 text-2xl font-semibold text-stone-100">Trade Intelligence Dashboard</h2>
+            <div class="mt-3 flex flex-wrap items-center gap-3 text-sm text-stone-400">
+              <span class="inline-flex items-center rounded-full border border-stone-800 bg-stone-900 px-3 py-1">Linked capsuleers <span class="ml-2 font-mono text-stone-100" x-text="linkedCharacterCount()"></span></span>
+              <span class="inline-flex items-center rounded-full border border-stone-800 bg-stone-900 px-3 py-1">Active orders <span class="ml-2 font-mono text-amber-300" x-text="filteredStats().activeOrderCount"></span></span>
+              <span class="inline-flex items-center rounded-full border border-stone-800 bg-stone-900 px-3 py-1">Low stock <span class="ml-2 font-mono text-rose-300" x-text="filteredStats().lowStockWarnings"></span></span>
+            </div>
           </div>
 
-          <div class="flex flex-col gap-3 md:flex-row md:items-center">
+          <div class="flex flex-col gap-3 xl:flex-row xl:items-center">
             <div class="relative">
-              <button @click="accountMenuOpen = !accountMenuOpen" class="flex min-w-[18rem] items-center gap-3 rounded-2xl border border-slate-700/80 bg-slate-900/85 px-4 py-3 text-left shadow-glass transition hover:border-cyan-400/40 hover:bg-slate-800/80">
+              <button @click="accountMenuOpen = !accountMenuOpen" class="flex min-w-[18rem] items-center gap-3 rounded-2xl border border-stone-800 bg-stone-900/90 px-4 py-3 text-left shadow-glass transition-colors duration-150 hover:bg-stone-800/60 focus:outline-none focus:ring-2 focus:ring-amber-500/50">
                 <template x-if="selectedCharacterMeta().avatar">
-                  <img :src="selectedCharacterMeta().avatar" alt="" class="h-11 w-11 rounded-2xl border border-slate-700 object-cover" />
+                  <img :src="selectedCharacterMeta().avatar" alt="" class="h-11 w-11 rounded-2xl border border-stone-700 object-cover" />
                 </template>
                 <template x-if="!selectedCharacterMeta().avatar">
-                  <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 text-cyan-300">
+                  <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-300">
                     <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
                       <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"></path>
                       <path d="M4 20a8 8 0 0 1 16 0"></path>
@@ -135,25 +134,25 @@
                   </div>
                 </template>
                 <div class="min-w-0 flex-1">
-                  <p class="truncate text-sm font-semibold text-white" x-text="selectedCharacterMeta().label"></p>
-                  <p class="truncate text-xs text-slate-400" x-text="selectedCharacterMeta().subtitle"></p>
+                  <p class="truncate text-sm font-semibold text-stone-100" x-text="selectedCharacterMeta().label"></p>
+                  <p class="truncate text-xs text-stone-400" x-text="selectedCharacterMeta().subtitle"></p>
                 </div>
                 <div class="text-right">
                   <p class="font-mono text-sm text-amber-300" x-text="fmtISK(selectedCharacterMeta().total)"></p>
-                  <p class="text-[11px] uppercase tracking-[0.25em] text-slate-500">Total ISK</p>
+                  <p class="text-[11px] uppercase tracking-[0.25em] text-stone-500">Total ISK</p>
                 </div>
               </button>
 
-              <div x-show="accountMenuOpen" x-transition x-on:click.outside="accountMenuOpen = false" class="absolute right-0 mt-3 w-[24rem] rounded-3xl border border-slate-700/70 bg-slate-900/95 p-3 shadow-glass">
-                <p class="px-3 pb-2 text-[11px] uppercase tracking-[0.3em] text-slate-500">Global Character Switcher</p>
+              <div x-show="accountMenuOpen" x-transition x-on:click.outside="accountMenuOpen = false" class="absolute right-0 mt-3 w-[24rem] rounded-3xl border border-stone-800 bg-stone-900/95 p-3 shadow-glass">
+                <p class="px-3 pb-2 text-[11px] uppercase tracking-[0.3em] text-stone-500">Global Character Switcher</p>
                 <div class="space-y-2">
                   <template x-for="option in characterOptions()" :key="option.character_id">
-                    <button @click="selectCharacter(String(option.character_id))" :class="String(option.character_id) === String(selectedCharacterId) ? 'border-cyan-400/50 bg-cyan-400/10' : 'border-transparent hover:border-slate-700 hover:bg-slate-800/80'" class="flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left transition">
+                    <button @click="selectCharacter(String(option.character_id))" :class="String(option.character_id) === String(selectedCharacterId) ? 'border-amber-400/40 bg-stone-800/90' : 'border-transparent hover:bg-stone-800/60'" class="flex w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-amber-500/50">
                       <template x-if="option.avatar_url">
-                        <img :src="option.avatar_url" alt="" class="h-10 w-10 rounded-2xl border border-slate-700 object-cover" />
+                        <img :src="option.avatar_url" alt="" class="h-10 w-10 rounded-2xl border border-stone-700 object-cover" />
                       </template>
                       <template x-if="!option.avatar_url">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 text-cyan-300">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-300">
                           <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
                             <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"></path>
                             <path d="M4 20a8 8 0 0 1 16 0"></path>
@@ -161,8 +160,8 @@
                         </div>
                       </template>
                       <div class="min-w-0 flex-1">
-                        <p class="truncate text-sm font-semibold text-white" x-text="option.character_name"></p>
-                        <p class="text-xs text-slate-400" x-text="option.character_id === 'all' ? 'Aggregate across linked pilots' : `${option.active_sell_orders || 0} active orders`"></p>
+                        <p class="truncate text-sm font-semibold text-stone-100" x-text="option.character_name"></p>
+                        <p class="text-xs text-stone-400" x-text="option.character_id === 'all' ? 'Aggregate across linked pilots' : `${option.active_sell_orders || 0} active orders`"></p>
                       </div>
                       <p class="font-mono text-sm text-amber-300" x-text="fmtISK(option.total_isk || 0)"></p>
                     </button>
@@ -172,11 +171,11 @@
             </div>
 
             <div class="flex items-center gap-3">
-              <div class="rounded-2xl border border-slate-700/80 bg-slate-900/80 px-4 py-3 shadow-glass">
-                <p class="text-[11px] uppercase tracking-[0.3em] text-slate-500">Last Synced</p>
-                <p class="mt-1 text-sm text-slate-200" x-text="formatLastSynced()"></p>
+              <div class="rounded-2xl border border-stone-800 bg-stone-900/90 px-4 py-3 shadow-glass">
+                <p class="text-[11px] uppercase tracking-[0.3em] text-stone-500">Last Synced</p>
+                <p class="mt-1 text-sm text-stone-200" x-text="formatLastSynced()"></p>
               </div>
-              <button @click="sync()" class="inline-flex items-center gap-3 rounded-2xl border border-cyan-400/30 bg-cyan-400/15 px-5 py-3 text-sm font-semibold text-cyan-100 shadow-[0_0_24px_rgba(34,211,238,0.12)] transition hover:border-cyan-300/50 hover:bg-cyan-400/20">
+              <button @click="sync()" class="inline-flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-5 py-3 text-sm font-semibold text-amber-100 transition-colors duration-150 hover:bg-amber-500/20 focus:outline-none focus:ring-2 focus:ring-amber-500/50">
                 <svg viewBox="0 0 24 24" class="h-5 w-5" :class="busy ? 'animate-spin-soft' : ''" fill="none" stroke="currentColor" stroke-width="1.8">
                   <path d="M20 12a8 8 0 0 0-14.9-4"></path>
                   <path d="M4 4v5h5"></path>
@@ -192,65 +191,100 @@
 
       <main class="flex-1 px-4 py-6 sm:px-6">
         <section x-show="activeTab === 'dashboard'" x-transition.opacity class="space-y-6">
-          <div class="grid gap-4 xl:grid-cols-3">
-            <div class="rounded-3xl border border-slate-700/60 bg-slate-900/75 p-5 shadow-glass backdrop-blur-md">
-              <p class="text-[11px] uppercase tracking-[0.35em] text-slate-500">Combined ISK</p>
-              <p class="mt-4 font-mono text-3xl font-semibold text-white" x-text="fmtISK(filteredStats().totalCombined)"></p>
-              <p class="mt-2 text-sm text-slate-400">Wallet balances plus active sell order value across the current character filter.</p>
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div class="h-full rounded-3xl border border-stone-800 bg-stone-900/85 p-5 shadow-glass">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-[11px] uppercase tracking-[0.35em] text-stone-500">Combined ISK</p>
+                  <p class="mt-4 font-mono text-3xl font-semibold text-stone-100" x-text="fmtISK(filteredStats().totalCombined)"></p>
+                </div>
+                <div class="rounded-2xl border border-amber-500/25 bg-amber-500/10 p-3 text-amber-300">
+                  <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M12 3v18"></path>
+                    <path d="M17 7.5c0-1.93-2.24-3.5-5-3.5s-5 1.57-5 3.5 2.24 3.5 5 3.5 5 1.57 5 3.5-2.24 3.5-5 3.5-5-1.57-5-3.5"></path>
+                  </svg>
+                </div>
+              </div>
+              <p class="mt-3 text-sm text-stone-400">Wallet balances plus active sell order value for the current filter.</p>
             </div>
-            <div class="rounded-3xl border border-slate-700/60 bg-slate-900/75 p-5 shadow-glass backdrop-blur-md">
-              <p class="text-[11px] uppercase tracking-[0.35em] text-slate-500">Active Sell Orders</p>
-              <p class="mt-4 font-mono text-3xl font-semibold text-cyan-300" x-text="filteredStats().activeOrderCount"></p>
-              <p class="mt-2 text-sm text-slate-400">Live sell orders currently tracked from the latest ESI synchronization pass.</p>
+            <div class="h-full rounded-3xl border border-stone-800 bg-stone-900/85 p-5 shadow-glass">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-[11px] uppercase tracking-[0.35em] text-stone-500">Active Sell Orders</p>
+                  <p class="mt-4 font-mono text-3xl font-semibold text-amber-300" x-text="filteredStats().activeOrderCount"></p>
+                </div>
+                <div class="rounded-2xl border border-stone-700 bg-stone-950/70 p-3 text-stone-300">
+                  <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M4 7h16M4 12h16M4 17h10"></path>
+                  </svg>
+                </div>
+              </div>
+              <p class="mt-3 text-sm text-stone-400">Live sell orders currently tracked after the latest ESI sync.</p>
             </div>
-            <div class="rounded-3xl border border-slate-700/60 bg-slate-900/75 p-5 shadow-glass backdrop-blur-md">
-              <p class="text-[11px] uppercase tracking-[0.35em] text-slate-500">Low Stock Alerts</p>
-              <p class="mt-4 font-mono text-3xl font-semibold text-amber-300" x-text="filteredStats().lowStockWarnings"></p>
-              <p class="mt-2 text-sm text-slate-400">Threshold-driven warnings with depletion severity highlighted in the restock console.</p>
+            <div class="h-full rounded-3xl border border-stone-800 bg-stone-900/85 p-5 shadow-glass">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-[11px] uppercase tracking-[0.35em] text-stone-500">Low Stock Alerts</p>
+                  <p class="mt-4 font-mono text-3xl font-semibold text-rose-300" x-text="filteredStats().lowStockWarnings"></p>
+                </div>
+                <div class="rounded-2xl border border-rose-500/25 bg-rose-500/10 p-3 text-rose-300">
+                  <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M12 3 2.5 20.5h19L12 3Z"></path>
+                    <path d="M12 9v4"></path>
+                    <path d="M12 17h.01"></path>
+                  </svg>
+                </div>
+              </div>
+              <p class="mt-3 text-sm text-stone-400">Items trending toward depletion based on your active thresholds.</p>
             </div>
           </div>
 
-          <div class="rounded-3xl border border-slate-800/80 bg-slate-900/65 p-5 shadow-glass">
+          <div class="rounded-3xl border border-stone-800 bg-stone-900/80 p-5 shadow-glass">
             <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p class="text-[11px] uppercase tracking-[0.35em] text-slate-500">Character Fleet</p>
-                <h3 class="mt-1 text-xl font-semibold text-white">Linked Capsuleers</h3>
+                <p class="text-[11px] uppercase tracking-[0.35em] text-stone-500">Character Fleet</p>
+                <h3 class="mt-1 text-xl font-semibold text-stone-100">Linked Capsuleers</h3>
               </div>
-              <p class="text-sm text-slate-400">Quick-glance balances, order exposure, and per-character sync actions.</p>
+              <p class="text-sm text-stone-400">Wallets, order exposure, and low-stock pressure by pilot.</p>
             </div>
 
             <div class="mt-5 grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+              <template x-if="filteredCharacters().length === 0">
+                <div class="rounded-3xl border border-dashed border-stone-700 bg-stone-950/50 p-8 text-center text-stone-400">
+                  Link an EVE character and run a sync to populate the dashboard.
+                </div>
+              </template>
               <template x-for="character in filteredCharacters()" :key="character.character_id">
-                <article class="group rounded-3xl border border-slate-800/80 bg-slate-950/60 p-5 transition hover:border-cyan-400/30 hover:bg-slate-900/80">
+                <article class="h-full rounded-3xl border border-stone-800 bg-stone-950/70 p-5 transition-colors duration-150 hover:bg-stone-900/80">
                   <div class="flex items-start justify-between gap-4">
                     <div class="flex min-w-0 items-center gap-4">
-                      <img :src="character.avatar_url" :alt="character.character_name" class="h-16 w-16 rounded-2xl border border-slate-700 object-cover shadow-[0_0_25px_rgba(15,23,42,0.6)]" />
+                      <img :src="character.avatar_url" :alt="character.character_name" class="h-16 w-16 rounded-2xl border border-stone-700 object-cover" />
                       <div class="min-w-0">
-                        <h4 class="truncate text-lg font-semibold text-white" x-text="character.character_name"></h4>
-                        <p class="mt-1 text-sm text-slate-400">Wallet <span class="font-mono text-slate-200" x-text="fmtISK(character.wallet_balance)"></span></p>
+                        <h4 class="truncate text-lg font-semibold text-stone-100" x-text="character.character_name"></h4>
+                        <p class="mt-1 text-sm text-stone-400">Wallet <span class="font-mono text-stone-200" x-text="fmtISK(character.wallet_balance)"></span></p>
                       </div>
                     </div>
-                    <span class="rounded-full border border-slate-700/80 bg-slate-900/80 px-3 py-1 text-[11px] uppercase tracking-[0.3em] text-slate-400">Online</span>
+                    <span class="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] uppercase tracking-[0.3em] text-emerald-300">Ready</span>
                   </div>
 
                   <div class="mt-5 grid grid-cols-3 gap-3 text-sm">
-                    <div class="rounded-2xl border border-slate-800/80 bg-slate-900/70 p-3">
-                      <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Orders</p>
-                      <p class="mt-2 font-mono text-lg text-cyan-300" x-text="character.active_sell_orders"></p>
+                    <div class="rounded-2xl border border-stone-800 bg-stone-900/70 p-3">
+                      <p class="text-xs uppercase tracking-[0.25em] text-stone-500">Orders</p>
+                      <p class="mt-2 font-mono text-lg text-amber-300" x-text="character.active_sell_orders"></p>
                     </div>
-                    <div class="rounded-2xl border border-slate-800/80 bg-slate-900/70 p-3">
-                      <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Exposure</p>
-                      <p class="mt-2 font-mono text-lg text-white" x-text="fmtISK(character.active_order_value)"></p>
+                    <div class="rounded-2xl border border-stone-800 bg-stone-900/70 p-3">
+                      <p class="text-xs uppercase tracking-[0.25em] text-stone-500">Exposure</p>
+                      <p class="mt-2 font-mono text-lg text-stone-100" x-text="fmtISK(character.active_order_value)"></p>
                     </div>
-                    <div class="rounded-2xl border border-slate-800/80 bg-slate-900/70 p-3">
-                      <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Alerts</p>
-                      <p class="mt-2 font-mono text-lg" :class="character.low_stock_count ? 'text-amber-300' : 'text-emerald-300'" x-text="character.low_stock_count"></p>
+                    <div class="rounded-2xl border border-stone-800 bg-stone-900/70 p-3">
+                      <p class="text-xs uppercase tracking-[0.25em] text-stone-500">Alerts</p>
+                      <p class="mt-2 font-mono text-lg" :class="character.low_stock_count ? 'text-rose-300' : 'text-emerald-300'" x-text="character.low_stock_count"></p>
                     </div>
                   </div>
 
                   <div class="mt-5 flex flex-wrap gap-3">
-                    <button @click="sync(character.character_id)" class="rounded-2xl border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:border-cyan-300/60 hover:bg-cyan-400/15">Sync Pilot</button>
-                    <button @click="startLogin()" class="rounded-2xl border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-300 transition hover:border-amber-400/40 hover:text-amber-300">Re-auth SSO</button>
+                    <button @click="sync(character.character_id)" class="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-sm font-semibold text-amber-100 transition-colors duration-150 hover:bg-amber-500/20 focus:outline-none focus:ring-2 focus:ring-amber-500/50">Sync Pilot</button>
+                    <button @click="startLogin()" class="rounded-2xl border border-stone-700 bg-stone-900/60 px-4 py-2 text-sm font-semibold text-stone-300 transition-colors duration-150 hover:bg-stone-800/60 focus:outline-none focus:ring-2 focus:ring-amber-500/50">Re-auth SSO</button>
                   </div>
                 </article>
               </template>
@@ -259,86 +293,93 @@
         </section>
 
         <section x-show="activeTab === 'orders'" x-transition.opacity class="space-y-5">
-          <div class="rounded-3xl border border-slate-800/80 bg-slate-900/65 p-5 shadow-glass">
+          <div class="rounded-3xl border border-stone-800 bg-stone-900/80 p-5 shadow-glass">
             <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
               <div>
-                <p class="text-[11px] uppercase tracking-[0.35em] text-slate-500">Trade Ops</p>
-                <h3 class="mt-1 text-xl font-semibold text-white">Active Orders & Trades</h3>
+                <p class="text-[11px] uppercase tracking-[0.35em] text-stone-500">Trade Ops</p>
+                <h3 class="mt-1 text-xl font-semibold text-stone-100">Active Orders and Trades</h3>
               </div>
-              <div class="grid gap-3 md:grid-cols-[minmax(0,22rem)_auto]">
-                <div class="relative">
-                  <svg viewBox="0 0 24 24" class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <circle cx="11" cy="11" r="7"></circle>
-                    <path d="m20 20-3.5-3.5"></path>
-                  </svg>
-                  <input x-model="orderSearch" type="text" placeholder="Search item, station, structure, or type ID" class="w-full rounded-2xl border border-slate-700/80 bg-slate-950/70 py-3 pl-12 pr-4 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400/40 focus:outline-none" />
+              <div class="grid items-stretch gap-3 md:grid-cols-[minmax(0,22rem)_7rem]">
+                <div class="relative flex min-h-[3.5rem] items-center">
+                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-stone-500">
+                    <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <circle cx="11" cy="11" r="7"></circle>
+                      <path d="m20 20-3.5-3.5"></path>
+                    </svg>
+                  </div>
+                  <input x-model="orderSearch" type="text" placeholder="Search item, station, structure, or type ID" class="h-full min-h-[3.5rem] w-full rounded-2xl border border-stone-800 bg-stone-800/80 py-3 pl-12 pr-4 text-sm text-stone-100 placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
                 </div>
-                <div class="rounded-2xl border border-slate-700/80 bg-slate-950/70 px-4 py-3 text-right">
-                  <p class="text-[11px] uppercase tracking-[0.3em] text-slate-500">Filtered</p>
-                  <p class="mt-1 font-mono text-sm text-cyan-300" x-text="filteredOrders().length"></p>
+                <div class="flex min-h-[3.5rem] flex-col items-end justify-center rounded-2xl border border-stone-800 bg-stone-900 px-4 py-3 text-right">
+                  <p class="text-[11px] uppercase tracking-[0.3em] text-stone-500">Filtered</p>
+                  <p class="mt-1 font-mono text-sm text-amber-300" x-text="filteredOrders().length"></p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="overflow-hidden rounded-3xl border border-slate-800/80 bg-slate-900/65 shadow-glass">
+          <div class="overflow-hidden rounded-3xl border border-stone-800 bg-stone-900/80 shadow-glass">
             <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-slate-800/80 text-sm">
-                <thead class="bg-slate-950/75 text-slate-400">
+              <table class="min-w-full divide-y divide-stone-800 text-sm">
+                <thead class="bg-stone-800/95 text-stone-300">
                   <tr>
-                    <th class="px-5 py-4 text-left font-medium">Item</th>
-                    <th class="px-5 py-4 text-left font-medium">
-                      <button @click="sortOrders('location_name')" class="inline-flex items-center gap-2 transition hover:text-white">Location</button>
+                    <th class="align-middle px-4 py-3 text-left font-medium">Item</th>
+                    <th class="align-middle px-4 py-3 text-left font-medium">
+                      <button @click="sortOrders('location_name')" class="inline-flex items-center gap-2 transition-colors duration-150 hover:text-stone-100">Location</button>
                     </th>
-                    <th class="px-5 py-4 text-left font-medium">
-                      <button @click="sortOrders('volume_remain')" class="inline-flex items-center gap-2 transition hover:text-white">Remaining</button>
+                    <th class="align-middle px-4 py-3 text-left font-medium">
+                      <button @click="sortOrders('volume_remain')" class="inline-flex items-center gap-2 transition-colors duration-150 hover:text-stone-100">Remaining</button>
                     </th>
-                    <th class="px-5 py-4 text-right font-medium">
-                      <button @click="sortOrders('price')" class="inline-flex items-center gap-2 transition hover:text-white">Unit Price</button>
+                    <th class="align-middle px-4 py-3 text-right font-medium">
+                      <button @click="sortOrders('price')" class="inline-flex items-center gap-2 transition-colors duration-150 hover:text-stone-100">Unit Price</button>
                     </th>
-                    <th class="px-5 py-4 text-right font-medium">
-                      <button @click="sortOrders('total_value')" class="inline-flex items-center gap-2 transition hover:text-white">Total Value</button>
+                    <th class="align-middle px-4 py-3 text-right font-medium">
+                      <button @click="sortOrders('total_value')" class="inline-flex items-center gap-2 transition-colors duration-150 hover:text-stone-100">Total Value</button>
                     </th>
-                    <th class="px-5 py-4 text-right font-medium">
-                      <button @click="sortOrders('expires_at')" class="inline-flex items-center gap-2 transition hover:text-white">Expiration</button>
+                    <th class="align-middle px-4 py-3 text-right font-medium">
+                      <button @click="sortOrders('expires_at')" class="inline-flex items-center gap-2 transition-colors duration-150 hover:text-stone-100">Expiration</button>
                     </th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-800/80">
+                <tbody class="divide-y divide-stone-800">
+                  <template x-if="filteredOrders().length === 0">
+                    <tr>
+                      <td colspan="6" class="px-4 py-8 text-center text-stone-400">No active sell orders are available for the current filter.</td>
+                    </tr>
+                  </template>
                   <template x-for="item in filteredOrders()" :key="item.order_id">
-                    <tr class="group bg-slate-900/40 transition hover:bg-slate-800/70">
-                      <td class="px-5 py-4">
+                    <tr class="bg-stone-900/40 transition-colors duration-150 hover:bg-stone-800/60">
+                      <td class="align-middle px-4 py-3 text-left">
                         <div class="flex items-center gap-4">
-                          <img :src="`https://images.evetech.net/types/${item.type_id}/icon?size=64`" :alt="item.item_name" class="h-11 w-11 rounded-2xl border border-slate-700 bg-slate-950/80 object-cover" />
+                          <img :src="`https://images.evetech.net/types/${item.type_id}/icon?size=64`" :alt="item.item_name" class="h-11 w-11 rounded-2xl border border-stone-700 bg-stone-950/80 object-cover" />
                           <div class="min-w-0">
-                            <p class="truncate font-medium text-white" x-text="item.item_name"></p>
-                            <p class="truncate text-xs text-slate-500" x-text="item.character_name"></p>
+                            <p class="truncate font-medium text-stone-100" x-text="item.item_name"></p>
+                            <p class="truncate text-xs text-stone-500" x-text="item.character_name || `Pilot ${item.character_id}`"></p>
                           </div>
                         </div>
                       </td>
-                      <td class="px-5 py-4 text-slate-300">
-                        <p class="font-medium text-slate-200" x-text="item.location_name"></p>
-                        <p class="mt-1 text-xs text-slate-500">Type ID <span class="font-mono" x-text="item.type_id"></span></p>
+                      <td class="align-middle px-4 py-3 text-left text-stone-300">
+                        <p class="font-medium text-stone-200" x-text="item.location_name"></p>
+                        <p class="mt-1 text-xs text-stone-500">Type ID <span class="font-mono" x-text="item.type_id"></span></p>
                       </td>
-                      <td class="px-5 py-4">
+                      <td class="align-middle px-4 py-3 text-left">
                         <div class="flex items-center gap-4">
                           <div class="min-w-0 flex-1">
-                            <div class="h-2 overflow-hidden rounded-full bg-slate-800">
-                              <div class="h-full rounded-full bg-gradient-to-r from-cyan-400 to-sky-300" :style="`width: ${Math.min(Number(item.remaining_percent || 0), 100)}%`"></div>
+                            <div class="h-2 overflow-hidden rounded-full bg-stone-800">
+                              <div class="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-300" :style="`width: ${Math.min(Number(item.remaining_percent || 0), 100)}%`"></div>
                             </div>
-                            <p class="mt-2 font-mono text-xs text-slate-400" x-text="`${item.remaining_percent}% remaining`"></p>
+                            <p class="mt-2 font-mono text-xs text-stone-400" x-text="`${item.remaining_percent}% remaining`"></p>
                           </div>
-                          <div class="text-right font-mono text-sm text-white">
+                          <div class="text-right font-mono text-sm text-stone-100">
                             <p x-text="item.volume_remain"></p>
-                            <p class="text-xs text-slate-500" x-text="`/ ${item.volume_total}`"></p>
+                            <p class="text-xs text-stone-500" x-text="`/ ${item.volume_total}`"></p>
                           </div>
                         </div>
                       </td>
-                      <td class="px-5 py-4 text-right font-mono text-slate-200" x-text="fmtISK(item.price)"></td>
-                      <td class="px-5 py-4 text-right font-mono text-white" x-text="fmtISK(item.total_value)"></td>
-                      <td class="px-5 py-4 text-right">
-                        <p class="font-medium text-slate-200" x-text="formatExpiry(item)"></p>
-                        <p class="mt-1 text-xs" :class="item.low_stock ? 'text-amber-300' : 'text-slate-500'" x-text="item.low_stock ? 'Stock trending low' : 'Nominal'"></p>
+                      <td class="align-middle px-4 py-3 text-right font-mono text-stone-200" x-text="fmtISK(item.price)"></td>
+                      <td class="align-middle px-4 py-3 text-right font-mono text-stone-100" x-text="fmtISK(item.total_value)"></td>
+                      <td class="align-middle px-4 py-3 text-right">
+                        <p class="font-medium text-stone-200" x-text="formatExpiry(item)"></p>
+                        <p class="mt-1 text-xs" :class="item.low_stock ? 'text-amber-300' : 'text-stone-500'" x-text="item.low_stock ? 'Stock trending low' : 'Nominal'"></p>
                       </td>
                     </tr>
                   </template>
@@ -349,66 +390,71 @@
         </section>
 
         <section x-show="activeTab === 'restock'" x-transition.opacity class="space-y-5">
-          <div class="grid gap-5 xl:grid-cols-[1.35fr_0.65fr]">
-            <div class="rounded-3xl border border-slate-800/80 bg-slate-900/65 p-5 shadow-glass">
-              <p class="text-[11px] uppercase tracking-[0.35em] text-slate-500">Stock Governance</p>
-              <h3 class="mt-1 text-xl font-semibold text-white">Restock & Inventory Alerts</h3>
-              <p class="mt-2 text-sm text-slate-400">Thresholds now live beside the items they control, so you can tune depletion rules without leaving the alert surface.</p>
+          <div class="grid gap-5 xl:grid-cols-[1.3fr_0.7fr]">
+            <div class="rounded-3xl border border-stone-800 bg-stone-900/80 p-5 shadow-glass">
+              <p class="text-[11px] uppercase tracking-[0.35em] text-stone-500">Stock Governance</p>
+              <h3 class="mt-1 text-xl font-semibold text-stone-100">Restock and Inventory Alerts</h3>
+              <p class="mt-2 text-sm text-stone-400">Tune thresholds inline and review low-stock pressure without leaving the alert surface.</p>
             </div>
-            <div class="rounded-3xl border border-slate-800/80 bg-slate-900/65 p-5 shadow-glass">
-              <p class="text-[11px] uppercase tracking-[0.35em] text-slate-500">Default Threshold</p>
+            <div class="rounded-3xl border border-stone-800 bg-stone-900/80 p-5 shadow-glass">
+              <p class="text-[11px] uppercase tracking-[0.35em] text-stone-500">Default Threshold</p>
               <p class="mt-3 font-mono text-3xl text-amber-300" x-text="`${settings.default_low_stock_percent}%`"></p>
-              <p class="mt-2 text-sm text-slate-400">Used whenever an item does not yet have a custom low-stock override.</p>
+              <p class="mt-2 text-sm text-stone-400">Applied when an item does not yet have a custom low-stock rule.</p>
             </div>
           </div>
 
-          <div class="overflow-hidden rounded-3xl border border-slate-800/80 bg-slate-900/65 shadow-glass">
+          <div class="overflow-hidden rounded-3xl border border-stone-800 bg-stone-900/80 shadow-glass">
             <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-slate-800/80 text-sm">
-                <thead class="bg-slate-950/75 text-slate-400">
+              <table class="min-w-full divide-y divide-stone-800 text-sm">
+                <thead class="bg-stone-800/95 text-stone-300">
                   <tr>
-                    <th class="px-5 py-4 text-left font-medium">Item</th>
-                    <th class="px-5 py-4 text-left font-medium">Status</th>
-                    <th class="px-5 py-4 text-right font-medium">Remaining</th>
-                    <th class="px-5 py-4 text-right font-medium">On Hand</th>
-                    <th class="px-5 py-4 text-right font-medium">Threshold Min</th>
-                    <th class="px-5 py-4 text-right font-medium">Threshold %</th>
-                    <th class="px-5 py-4 text-right font-medium">Restock Need</th>
-                    <th class="px-5 py-4 text-right font-medium">Save</th>
+                    <th class="align-middle px-4 py-3 text-left font-medium">Item</th>
+                    <th class="align-middle px-4 py-3 text-left font-medium">Status</th>
+                    <th class="align-middle px-4 py-3 text-right font-medium">Remaining</th>
+                    <th class="align-middle px-4 py-3 text-right font-medium">On Hand</th>
+                    <th class="align-middle px-4 py-3 text-right font-medium">Threshold Min</th>
+                    <th class="align-middle px-4 py-3 text-right font-medium">Threshold %</th>
+                    <th class="align-middle px-4 py-3 text-right font-medium">Restock Need</th>
+                    <th class="align-middle px-4 py-3 text-right font-medium">Save</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-800/80">
+                <tbody class="divide-y divide-stone-800">
+                  <template x-if="restockRows().length === 0">
+                    <tr>
+                      <td colspan="8" class="px-4 py-8 text-center text-stone-400">No restock alerts yet. Healthy inventory will show here once sell orders exist.</td>
+                    </tr>
+                  </template>
                   <template x-for="item in restockRows()" :key="`${item.character_id}-${item.type_id}`">
-                    <tr class="bg-slate-900/40 transition hover:bg-slate-800/70">
-                      <td class="px-5 py-4">
+                    <tr class="bg-stone-900/40 transition-colors duration-150 hover:bg-stone-800/60">
+                      <td class="align-middle px-4 py-3 text-left">
                         <div class="flex items-center gap-4">
-                          <img :src="`https://images.evetech.net/types/${item.type_id}/icon?size=64`" :alt="item.item_name" class="h-11 w-11 rounded-2xl border border-slate-700 bg-slate-950/80 object-cover" />
+                          <img :src="`https://images.evetech.net/types/${item.type_id}/icon?size=64`" :alt="item.item_name" class="h-11 w-11 rounded-2xl border border-stone-700 bg-stone-950/80 object-cover" />
                           <div class="min-w-0">
-                            <p class="truncate font-medium text-white" x-text="item.item_name"></p>
-                            <p class="truncate text-xs text-slate-500" x-text="`${item.character_name} • ${item.location_name}`"></p>
+                            <p class="truncate font-medium text-stone-100" x-text="item.item_name"></p>
+                            <p class="truncate text-xs text-stone-500" x-text="`${item.character_name} | ${item.location_name}`"></p>
                           </div>
                         </div>
                       </td>
-                      <td class="px-5 py-4">
+                      <td class="align-middle px-4 py-3 text-left">
                         <span :class="statusBadge(item.status).classes" class="inline-flex rounded-full border px-3 py-1 text-xs font-semibold" x-text="statusBadge(item.status).label"></span>
                       </td>
-                      <td class="px-5 py-4 text-right">
-                        <p class="font-mono text-white" x-text="item.quantity_remaining"></p>
-                        <p class="text-xs text-slate-500" x-text="`${item.remaining_percent.toFixed(1)}%`"></p>
+                      <td class="align-middle px-4 py-3 text-right">
+                        <p class="font-mono text-stone-100" x-text="item.quantity_remaining"></p>
+                        <p class="text-xs text-stone-500" x-text="`${item.remaining_percent.toFixed(1)}%`"></p>
                       </td>
-                      <td class="px-5 py-4 text-right font-mono text-slate-300" x-text="item.stock_on_hand"></td>
-                      <td class="px-5 py-4">
-                        <input x-model="thresholdDraft(item).min_quantity" type="number" min="0" class="w-24 rounded-xl border border-slate-700 bg-slate-950/80 px-3 py-2 text-right font-mono text-white focus:border-cyan-400/40 focus:outline-none ml-auto block" />
+                      <td class="align-middle px-4 py-3 text-right font-mono text-stone-300" x-text="item.stock_on_hand"></td>
+                      <td class="align-middle px-4 py-3 text-right">
+                        <input x-model="thresholdDraft(item).min_quantity" type="number" min="0" class="ml-auto block w-24 rounded-xl border border-stone-800 bg-transparent px-3 py-2 text-right font-mono text-stone-100 transition-colors duration-150 focus:bg-stone-800/80 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
                       </td>
-                      <td class="px-5 py-4">
-                        <input x-model="thresholdDraft(item).low_stock_percent" type="number" min="1" max="100" class="w-24 rounded-xl border border-slate-700 bg-slate-950/80 px-3 py-2 text-right font-mono text-white focus:border-cyan-400/40 focus:outline-none ml-auto block" />
+                      <td class="align-middle px-4 py-3 text-right">
+                        <input x-model="thresholdDraft(item).low_stock_percent" type="number" min="1" max="100" class="ml-auto block w-24 rounded-xl border border-stone-800 bg-transparent px-3 py-2 text-right font-mono text-stone-100 transition-colors duration-150 focus:bg-stone-800/80 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
                       </td>
-                      <td class="px-5 py-4 text-right">
+                      <td class="align-middle px-4 py-3 text-right">
                         <p class="font-mono text-amber-300" x-text="item.required_restock_qty"></p>
-                        <p class="text-xs text-slate-500" x-text="`${item.daily_velocity} / day`"></p>
+                        <p class="text-xs text-stone-500" x-text="`${item.daily_velocity} / day`"></p>
                       </td>
-                      <td class="px-5 py-4 text-right">
-                        <button @click="saveThresholdForRow(item)" class="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 text-cyan-200 transition hover:border-cyan-300/60 hover:bg-cyan-400/15">
+                      <td class="align-middle px-4 py-3 text-right">
+                        <button @click="saveThresholdForRow(item)" class="inline-flex h-10 w-10 items-center justify-center rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-100 transition-colors duration-150 hover:bg-amber-500/20 focus:outline-none focus:ring-2 focus:ring-amber-500/50">
                           <svg viewBox="0 0 24 24" class="h-5 w-5" :class="thresholdDraft(item).saving ? 'animate-spin-soft' : ''" fill="none" stroke="currentColor" stroke-width="1.8">
                             <path x-show="!thresholdDraft(item).saving" d="m5 12 4 4L19 6"></path>
                             <path x-show="thresholdDraft(item).saving" d="M12 4v4m0 8v4m8-8h-4M8 12H4m13.66 5.66-2.83-2.83M9.17 9.17 6.34 6.34m11.32 0-2.83 2.83M9.17 14.83l-2.83 2.83"></path>
@@ -425,49 +471,53 @@
 
         <section x-show="activeTab === 'settings'" x-transition.opacity class="space-y-5">
           <div class="grid gap-5 xl:grid-cols-[0.9fr_1.1fr]">
-            <div class="rounded-3xl border border-slate-800/80 bg-slate-900/65 p-6 shadow-glass">
-              <p class="text-[11px] uppercase tracking-[0.35em] text-slate-500">Setup</p>
-              <h3 class="mt-1 text-xl font-semibold text-white">Application Configuration</h3>
-              <p class="mt-2 text-sm text-slate-400">PKCE is handled automatically. Only the Client ID and callback need to stay aligned with your EVE developer app.</p>
+            <div class="rounded-3xl border border-stone-800 bg-stone-900/80 p-6 shadow-glass">
+              <p class="text-[11px] uppercase tracking-[0.35em] text-stone-500">Setup</p>
+              <h3 class="mt-1 text-xl font-semibold text-stone-100">Application Configuration</h3>
+              <p class="mt-2 text-sm text-stone-400">PKCE is handled automatically. Keep the Client ID and callback aligned with your EVE developer app.</p>
 
               <div class="mt-6 space-y-4">
                 <label class="block">
-                  <span class="mb-2 block text-sm text-slate-300">Client ID</span>
-                  <input x-model="settings.client_id" type="text" class="w-full rounded-2xl border border-slate-700/80 bg-slate-950/80 px-4 py-3 text-white focus:border-cyan-400/40 focus:outline-none" />
+                  <span class="mb-2 block text-sm text-stone-300">Client ID</span>
+                  <input :value="settings.client_id" type="text" readonly class="w-full rounded-2xl border border-stone-800 bg-stone-900/80 px-4 py-3 text-stone-300 focus:outline-none" />
+                  <p class="mt-2 text-xs text-stone-500">Managed in application config and locked for this deployment.</p>
                 </label>
                 <label class="block">
-                  <span class="mb-2 block text-sm text-slate-300">Callback URL</span>
-                  <input x-model="settings.callback_url" type="text" class="w-full rounded-2xl border border-slate-700/80 bg-slate-950/80 px-4 py-3 text-white focus:border-cyan-400/40 focus:outline-none" />
+                  <span class="mb-2 block text-sm text-stone-300">Callback URL</span>
+                  <input x-model="settings.callback_url" type="text" class="w-full rounded-2xl border border-stone-800 bg-stone-800/80 px-4 py-3 text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
                 </label>
                 <label class="block">
-                  <span class="mb-2 block text-sm text-slate-300">Default Low Stock %</span>
-                  <input x-model="settings.default_low_stock_percent" type="number" min="1" max="100" class="w-full rounded-2xl border border-slate-700/80 bg-slate-950/80 px-4 py-3 text-white focus:border-cyan-400/40 focus:outline-none" />
+                  <span class="mb-2 block text-sm text-stone-300">Default Low Stock %</span>
+                  <input x-model="settings.default_low_stock_percent" type="number" min="1" max="100" class="w-full rounded-2xl border border-stone-800 bg-stone-800/80 px-4 py-3 text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
                 </label>
               </div>
 
               <div class="mt-6 flex flex-wrap gap-3">
-                <button @click="saveSettings()" class="rounded-2xl border border-cyan-400/30 bg-cyan-400/10 px-5 py-3 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/50 hover:bg-cyan-400/15">Save App Config</button>
-                <button @click="startLogin()" class="rounded-2xl border border-amber-400/30 bg-amber-400/10 px-5 py-3 text-sm font-semibold text-amber-200 transition hover:border-amber-300/50 hover:bg-amber-400/15">Add Character</button>
+                <button @click="saveSettings()" class="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-5 py-3 text-sm font-semibold text-amber-100 transition-colors duration-150 hover:bg-amber-500/20 focus:outline-none focus:ring-2 focus:ring-amber-500/50">Save App Config</button>
+                <button @click="startLogin()" class="rounded-2xl border border-stone-700 bg-stone-900/60 px-5 py-3 text-sm font-semibold text-stone-200 transition-colors duration-150 hover:bg-stone-800/60 focus:outline-none focus:ring-2 focus:ring-amber-500/50">Add Character</button>
               </div>
             </div>
 
             <div class="grid gap-5">
-              <div class="rounded-3xl border border-slate-800/80 bg-slate-900/65 p-6 shadow-glass">
+              <div class="rounded-3xl border border-stone-800 bg-stone-900/80 p-6 shadow-glass">
                 <div class="flex items-center justify-between gap-4">
                   <div>
-                    <p class="text-[11px] uppercase tracking-[0.35em] text-slate-500">Accounts</p>
-                    <h3 class="mt-1 text-xl font-semibold text-white">Linked Characters</h3>
+                    <p class="text-[11px] uppercase tracking-[0.35em] text-stone-500">Accounts</p>
+                    <h3 class="mt-1 text-xl font-semibold text-stone-100">Linked Characters</h3>
                   </div>
-                  <span class="rounded-full border border-slate-700 bg-slate-950/70 px-3 py-1 text-xs uppercase tracking-[0.25em] text-slate-400" x-text="`${settings.characters.length} linked`"></span>
+                  <span class="rounded-full border border-stone-800 bg-stone-950/70 px-3 py-1 text-xs uppercase tracking-[0.25em] text-stone-400" x-text="`${linkedCharacterCount()} linked`"></span>
                 </div>
                 <div class="mt-5 grid gap-3 md:grid-cols-2">
+                  <template x-if="settings.characters.length === 0">
+                    <div class="rounded-2xl border border-dashed border-stone-700 bg-stone-950/50 p-5 text-sm text-stone-400">No characters linked yet.</div>
+                  </template>
                   <template x-for="character in settings.characters" :key="character.character_id">
-                    <div class="rounded-2xl border border-slate-800/80 bg-slate-950/70 p-4">
+                    <div class="rounded-2xl border border-stone-800 bg-stone-950/70 p-4">
                       <div class="flex items-center gap-3">
-                        <img :src="character.avatar_url" :alt="character.character_name" class="h-12 w-12 rounded-2xl border border-slate-700 object-cover" />
+                        <img :src="character.avatar_url" :alt="character.character_name" class="h-12 w-12 rounded-2xl border border-stone-700 object-cover" />
                         <div class="min-w-0">
-                          <p class="truncate font-medium text-white" x-text="character.character_name"></p>
-                          <p class="truncate text-xs text-slate-500">Character ID <span class="font-mono" x-text="character.character_id"></span></p>
+                          <p class="truncate font-medium text-stone-100" x-text="character.character_name"></p>
+                          <p class="truncate text-xs text-stone-500">Character ID <span class="font-mono" x-text="character.character_id"></span></p>
                         </div>
                       </div>
                     </div>
@@ -475,25 +525,25 @@
                 </div>
               </div>
 
-              <div class="rounded-3xl border border-slate-800/80 bg-slate-900/65 p-6 shadow-glass">
-                <p class="text-[11px] uppercase tracking-[0.35em] text-slate-500">Systems Check</p>
-                <h3 class="mt-1 text-xl font-semibold text-white">Scopes & Cache Status</h3>
+              <div class="rounded-3xl border border-stone-800 bg-stone-900/80 p-6 shadow-glass">
+                <p class="text-[11px] uppercase tracking-[0.35em] text-stone-500">Systems Check</p>
+                <h3 class="mt-1 text-xl font-semibold text-stone-100">Scopes and Cache Status</h3>
                 <div class="mt-5 grid gap-4 md:grid-cols-2">
-                  <div class="rounded-2xl border border-slate-800/80 bg-slate-950/70 p-4">
-                    <p class="text-sm font-medium text-white">PKCE Authentication</p>
+                  <div class="rounded-2xl border border-stone-800 bg-stone-950/70 p-4">
+                    <p class="text-sm font-medium text-stone-100">PKCE Authentication</p>
                     <div class="mt-3 flex items-center justify-between">
-                      <span class="text-xs uppercase tracking-[0.25em] text-slate-500">Enabled</span>
-                      <div class="flex h-7 w-12 items-center rounded-full bg-cyan-400/20 p-1">
-                        <div class="h-5 w-5 rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(34,211,238,0.4)]"></div>
+                      <span class="text-xs uppercase tracking-[0.25em] text-stone-500">Enabled</span>
+                      <div class="flex h-7 w-12 items-center rounded-full bg-amber-500/20 p-1">
+                        <div class="ml-auto h-5 w-5 rounded-full bg-amber-300 shadow-[0_0_16px_rgba(245,158,11,0.35)]"></div>
                       </div>
                     </div>
                   </div>
-                  <div class="rounded-2xl border border-slate-800/80 bg-slate-950/70 p-4">
-                    <p class="text-sm font-medium text-white">Type Cache Ready</p>
+                  <div class="rounded-2xl border border-stone-800 bg-stone-950/70 p-4">
+                    <p class="text-sm font-medium text-stone-100">Type Cache Ready</p>
                     <div class="mt-3 flex items-center justify-between">
-                      <span class="text-xs uppercase tracking-[0.25em] text-slate-500" x-text="`${dashboard.known_types} types cached`"></span>
-                      <div class="flex h-7 w-12 items-center rounded-full bg-emerald-400/20 p-1">
-                        <div class="ml-auto h-5 w-5 rounded-full bg-emerald-300 shadow-[0_0_16px_rgba(16,185,129,0.35)]"></div>
+                      <span class="text-xs uppercase tracking-[0.25em] text-stone-500" x-text="`${dashboard.known_types} types cached`"></span>
+                      <div class="flex h-7 w-12 items-center rounded-full bg-emerald-500/20 p-1">
+                        <div class="ml-auto h-5 w-5 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(16,185,129,0.3)]"></div>
                       </div>
                     </div>
                   </div>
@@ -501,7 +551,7 @@
 
                 <div class="mt-5 flex flex-wrap gap-2">
                   <template x-for="scope in settings.required_scopes" :key="scope">
-                    <span class="rounded-full border border-slate-700/80 bg-slate-950/70 px-3 py-2 text-xs text-slate-300" x-text="scope"></span>
+                    <span class="rounded-full border border-stone-800 bg-stone-950/70 px-3 py-2 text-xs text-stone-300" x-text="scope"></span>
                   </template>
                 </div>
               </div>
@@ -511,7 +561,7 @@
       </main>
     </div>
 
-    <div x-show="toast.show" x-transition class="fixed bottom-5 right-5 z-50 max-w-sm rounded-2xl border px-4 py-3 shadow-glass backdrop-blur-md" :class="toast.tone === 'success' ? 'border-emerald-500/30 bg-emerald-500/15 text-emerald-100' : toast.tone === 'error' ? 'border-rose-500/30 bg-rose-500/15 text-rose-100' : 'border-cyan-400/30 bg-slate-900/90 text-slate-100'">
+    <div x-show="toast.show" x-transition class="fixed bottom-5 right-5 z-50 max-w-sm rounded-2xl border px-4 py-3 shadow-glass backdrop-blur-md" :class="toast.tone === 'success' ? 'border-emerald-500/30 bg-emerald-500/15 text-emerald-100' : toast.tone === 'error' ? 'border-rose-500/30 bg-rose-500/15 text-rose-100' : 'border-amber-500/30 bg-stone-900/95 text-stone-100'">
       <div class="flex items-start gap-3">
         <div class="mt-0.5">
           <svg x-show="toast.tone === 'success'" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">

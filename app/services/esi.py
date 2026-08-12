@@ -40,7 +40,12 @@ def utcnow() -> datetime:
 def ensure_app_settings(db: Session) -> AppSetting:
     record = db.get(AppSetting, 1)
     if record is None:
-        record = AppSetting(id=1)
+        record = AppSetting(id=1, client_id=settings.eve_client_id)
+        db.add(record)
+        db.commit()
+        db.refresh(record)
+    elif record.client_id != settings.eve_client_id:
+        record.client_id = settings.eve_client_id
         db.add(record)
         db.commit()
         db.refresh(record)

@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     app_url: str = "http://localhost:8000"
     database_url: str = f"sqlite:///{(DATA_DIR / 'eve_ledger.db').as_posix()}"
     secret_key: str = Field(default_factory=lambda: secrets.token_hex(32))
+    eve_client_id: str = "4e537bc66439403da6e96cb1ca8449a1"
     eve_esi_base_url: str = "https://esi.evetech.net/latest"
     eve_sso_authorize_url: str = "https://login.eveonline.com/v2/oauth/authorize"
     eve_sso_token_url: str = "https://login.eveonline.com/v2/oauth/token"
